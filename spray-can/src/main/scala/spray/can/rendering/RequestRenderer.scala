@@ -57,7 +57,7 @@ class RequestRenderer(userAgentHeader: String, requestSizeHint: Int) {
     put(method.value).put(' ').put(uriWithoutFragment.toString).put(' ').put(protocol.value).put(CrLf)
     val hostHeaderPresent = putHeadersAndReturnHostHeaderPresent(headers, !request.entity.isEmpty)
     if (!hostHeaderPresent) {
-      put("Host: ").put(remoteAddress.getHostName)
+      put("Host: ").put(uri.authority.host.toOption.map(_.toString).getOrElse(remoteAddress.getHostName))
       val port = remoteAddress.getPort
       if (port != 0) put(':').put(Integer.toString(port))
       put(CrLf)
